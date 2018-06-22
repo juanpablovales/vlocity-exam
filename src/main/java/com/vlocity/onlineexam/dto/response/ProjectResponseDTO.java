@@ -3,6 +3,7 @@ package com.vlocity.onlineexam.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder.In;
 
@@ -17,6 +18,10 @@ public class ProjectResponseDTO {
   @JsonProperty(value = "project_name")
   private String projectName;
   private Integer duration;
+  @JsonProperty(value = "start_date")
+  private Date startDate;
+  @JsonProperty(value = "end_date")
+  private Date endDate;
   private List<TaskResponseDTO> tasks;
 
   /**
@@ -58,6 +63,22 @@ public class ProjectResponseDTO {
 
   public void setTasks(List<TaskResponseDTO> tasks) {
     this.tasks = tasks;
+  }
+
+  public Date getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
+
+  public Date getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
   }
 
   public static class Builder {

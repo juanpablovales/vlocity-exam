@@ -55,7 +55,7 @@ public class ProjectService {
       if (showAll) {
         List<TaskResponseDTO> tasks = taskService.getByProjectId(id);
         response.setTasks(tasks);
-        response.setDuration(taskService.getTotalTaskDuration(id));
+        taskService.getTotalTaskDuration(response);
       }
       return response;
     }

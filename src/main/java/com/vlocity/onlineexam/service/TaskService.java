@@ -3,6 +3,7 @@ package com.vlocity.onlineexam.service;
 import com.vlocity.onlineexam.commons.AppMessageDefault;
 import com.vlocity.onlineexam.commons.CustomException;
 import com.vlocity.onlineexam.dto.request.TaskRequestDTO;
+import com.vlocity.onlineexam.dto.response.ProjectResponseDTO;
 import com.vlocity.onlineexam.dto.response.TaskResponseDTO;
 import com.vlocity.onlineexam.model.ProjectModel;
 import com.vlocity.onlineexam.model.TaskModel;
@@ -38,8 +39,6 @@ public class TaskService {
 
   /**
    * Method to create new task
-   * @param taskRequestDTO
-   * @return
    */
   public TaskResponseDTO createNewTask(final TaskRequestDTO taskRequestDTO) {
     LOGGER.info(taskRequestDTO.toString());
@@ -56,8 +55,6 @@ public class TaskService {
 
   /**
    * Method to get tasks by project id
-   * @param projectId
-   * @return
    */
   public List<TaskResponseDTO> getByProjectId(final Long projectId) {
     List<TaskModel> tasks = taskRepository.findByProjectIdOrderByStartDateAsc(projectId);
@@ -70,18 +67,17 @@ public class TaskService {
 
   /**
    * Method to get the total duration of project based on tasks
-   * @param projectId
-   * @return
    */
-  public Integer getTotalTaskDuration(final Long projectId) {
-    TaskModel startTask = taskRepository.findTop1ByProjectIdOrderByStartDateAsc(projectId);
-    TaskModel endTask = taskRepository.findTop1ByProjectIdOrderByEndDateDesc(projectId);
+  public void getTotalTaskDuration(final ProjectResponseDTO project) {
+    TaskModel startTask = taskRepository.findTop1ByProjectIdOrderByStartDateAsc(project.getId());
+    TaskModel endTask = taskRepository.findTop1ByProjectIdOrderByEndDateDesc(project.getId());
     if (startTask != null
         && endTask != null) {
-      return Days.daysBetween(new DateTime(startTask.getStartDate()),
-          new DateTime(endTask.getEndDate())).getDays();
+      project.setDuration(Days.daysBetween(new DateTime(startTask.getStartDate()),
+          new DateTime(endTask.getEndDate())).getDays());
+      project.setStartDate(startTask.getStartDate());
+      project.setEndDate(endTask.getEndDate());
     }
-    return 0;
   }
 
 
